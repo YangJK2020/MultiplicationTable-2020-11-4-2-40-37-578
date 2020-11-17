@@ -27,7 +27,69 @@ export class MultiplicationTable {
     return outPut
   }
 
+  private getOutPutString2 (input:Expression[][]): string{
+    let outPut = ''
+    outPut = input.map(row => row.map(expression => {
+
+      if(expression.factor1 === 2 && (expression.factor2 === 3 || expression.factor2 === 4))
+      {
+        return `${expression.factor1}*${expression.factor2}=${expression.product}` + ' '
+      }
+      else
+      {
+        return `${expression.factor1}*${expression.factor2}=${expression.product}`
+      }
+    }
+    )
+      .join('  ')).join('\n')
+    return outPut
+  }
+
+  private getOutPutString3 (input:Expression[][]): string{
+    let outPut = ''
+    outPut = input.map(row => row.map(expression => {
+
+      if(expression.factor2 !== 3 && expression.factor2 !== 10)
+      {
+        return `${expression.factor1}*${expression.factor2}=${expression.product}` + ' '
+      }
+      else
+      {
+        return `${expression.factor1}*${expression.factor2}=${expression.product}`
+      }
+    }
+    )
+      .join('  ')).join('\n')
+    return outPut
+  }
+
+  private getOutPutString4 (input:Expression[][]): string{
+    let outPut = ''
+    outPut = input.map(row => row.map(expression => {
+
+      if(expression.factor2 !== 2 && expression.factor2 !== 10)
+      {
+        if(expression.factor1 === 2 && (expression.factor2 === 3 || expression.factor2 === 4))
+        {
+          return `${expression.factor1}*${expression.factor2}=${expression.product}` + '  '
+        }
+        else
+        {
+          return `${expression.factor1}*${expression.factor2}=${expression.product}` + ' '
+        }
+      }
+      else
+      {
+        return `${expression.factor1}*${expression.factor2}=${expression.product}`
+      }
+    }
+    )
+      .join('  ')).join('\n')
+    return outPut
+  }
+
   public render(start: number, end: number): string{
+    const table = this.calculateMultiplicationTable(start,end)
     if (this.isStartSmaller(start, end))
     {
       return ''
@@ -36,9 +98,44 @@ export class MultiplicationTable {
     {
       return 'input number is in invalid range'
     }
-    const table = this.calculateMultiplicationTable(start,end)
-    const result = this.getOutPutString(table)
-    return result
+    if(end !== 10)
+    {
+      if(end <= 4 || (end <= 9 && end >4 && start >= 3))
+      {
+        const result = this.getOutPutString(table)
+        return result
+      }
+      else if(end <= 9 && end >4 && start <= 2)
+      {
+        const result = this.getOutPutString2(table)
+        return result
+      }
+      else
+      {
+        return 'unexpected case'
+      }
+    }
+    else
+    {
+      if(start >= 3)
+      {
+        const result = this.getOutPutString3(table)
+        return result
+      }
+      else if (start === 2)
+      {
+        const result = this.getOutPutString4(table)
+        return result
+      }
+      else if (start === 1)
+      {
+        return 'code for 1-10 to be implemented yet'
+      }
+      else
+      {
+        return 'unexpected case'
+      }
+    }
   }
 }
 export class Expression {
